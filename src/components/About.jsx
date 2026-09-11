@@ -20,8 +20,9 @@ const About = () => {
             data-aos="drop-bounce"
             className="relative flex justify-center w-full"
           >
-            {/* Lanyard string */}
-            <div className="absolute -top-32 left-1/2 w-3 h-40 bg-black transform -translate-x-1/2 shadow-inner z-0"></div>
+            {/* Lanyard string — -top-20 keeps its top edge flush with the section's top edge
+                (pt-20 padding), so it never pokes out above the red section into the hero. */}
+            <div className="absolute -top-20 left-1/2 w-3 h-40 bg-black transform -translate-x-1/2 shadow-inner z-0"></div>
             {/* Lanyard clip */}
             <div className="absolute -top-6 left-1/2 w-6 h-12 bg-gray-300 rounded border border-gray-400 transform -translate-x-1/2 z-10 shadow-[0_2px_10px_rgba(0,0,0,0.3)]"></div>
 

@@ -3,6 +3,9 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 // Adjusted import path for the video
 import heroVideo from '../assets/hero-video/herovideo.mp4';
+// Imported so Vite bundles + fingerprints the PDF — a bare "/assets/..." href 404s in production
+// (the file never gets emitted) and Vercel's SPA rewrite then serves index.html instead.
+import resumePdf from '../assets/Muhammad_Abdullah.pdf';
 
 const Hero = () => {
   const videoRef = useRef(null);
@@ -110,12 +113,13 @@ const Hero = () => {
           >
             {/* Download Resume Button */}
             <a 
-              href="/assets/Muhammad_Abdullah.pdf" 
-              download 
-              className="px-6 py-2.5 md:px-7 md:py-3 text-xs md:text-sm rounded-full bg-[#ff2a2a] text-white font-bold hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg inline-block text-center flex items-center justify-center gap-1.5"
+              href={resumePdf} 
+              download="Muhammad_Abdullah_Resume.pdf"
+              type="application/pdf"
+              className="px-6 py-2.5 md:px-7 md:py-3 text-xs md:text-sm rounded-full bg-[#ff2a2a] text-white font-bold hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg inline-flex items-center justify-center gap-2 whitespace-nowrap"
             >
               Download Resume
-              <svg className="w-3.5 h-3.5 text-white/70" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 text-white/90 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </a>
