@@ -106,14 +106,18 @@ const Hero = () => {
           <div 
             data-aos="fade-up"
             data-aos-delay="400"
-            className="flex flex-wrap items-center gap-3 w-full"
+            className="flex flex-wrap items-start gap-3 w-full"
           >
-            {/* Hire Me Button */}
+            {/* Download Resume Button */}
             <a 
-              href="mailto:abdullahjuttjutt910@gmail.com?subject=Hiring Inquiry - Full Stack Engineer Position" 
-              className="px-6 py-2.5 md:px-7 md:py-3 text-xs md:text-sm rounded-full bg-[#ff2a2a] text-white font-bold hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg inline-block text-center"
+              href="/assets/Muhammad_Abdullah.pdf" 
+              download 
+              className="px-6 py-2.5 md:px-7 md:py-3 text-xs md:text-sm rounded-full bg-[#ff2a2a] text-white font-bold hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg inline-block text-center flex items-center justify-center gap-1.5"
             >
-              HIRE ME
+              Download Resume
+              <svg className="w-3.5 h-3.5 text-white/70" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
             </a>
 
             {/* View Projects Button */}
