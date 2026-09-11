@@ -1,4 +1,13 @@
 import React from 'react';
+import { SiWhatsapp } from 'react-icons/si';
+import { FaLinkedinIn, FaGithub, FaInstagram } from 'react-icons/fa6';
+
+const socials = [
+  { name: 'GitHub', url: 'https://github.com/Abdullah-JUTT-cloud', Icon: FaGithub },
+  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/muhammad-abdullah-757aa2287/', Icon: FaLinkedinIn },
+  { name: 'Instagram', url: 'https://www.instagram.com/abdullah_jutt.44?igsh=dGVwODBvcnN2N3c0', Icon: FaInstagram },
+  { name: 'WhatsApp', url: 'https://wa.me/923214194045', Icon: SiWhatsapp },
+];
 
 const Footer = () => {
   return (
@@ -33,11 +42,21 @@ const Footer = () => {
       {/* Bottom Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full items-end font-medium">
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-4 text-sm font-sans">
-            <a href="https://github.com/Abdullah-JUTT-cloud" target="_blank" rel="noopener noreferrer" className="hover:text-[#ff2a2a] transition-colors">GitHub</a>
-            <a href="https://www.linkedin.com/in/muhammad-abdullah-757aa2287/" target="_blank" rel="noopener noreferrer" className="hover:text-[#ff2a2a] transition-colors">LinkedIn</a>
-            <a href="https://www.instagram.com/abdullah_jutt.44?igsh=dGVwODBvcnN2N3c0" target="_blank" rel="noopener noreferrer" className="hover:text-[#ff2a2a] transition-colors">Instagram</a>
-            <a href="https://wa.me/923214194045" target="_blank" rel="noopener noreferrer" className="hover:text-[#ff2a2a] transition-colors">WhatsApp</a>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-sans">
+            {socials.map(({ name, url, Icon }) => (
+              <a
+                key={name}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={name}
+                title={name}
+                className="flex items-center gap-2 text-[#d4d4d4] hover:text-[#ff2a2a] transition-colors"
+              >
+                <Icon size={24} />
+                <span className="uppercase text-xs font-bold tracking-widest">{name}</span>
+              </a>
+            ))}
           </div>
           <p className="text-white/60 font-mono text-[10px]">
             &copy; 2026 Muhammad Abdullah · All rights reserved · Built with ❤️ in Pakistan

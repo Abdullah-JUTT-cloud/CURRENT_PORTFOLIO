@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 import SectionDivider from '../components/SectionDivider';
 
 import p1 from '../assets/about/p1.png';
@@ -263,9 +264,10 @@ const Projects = () => {
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-2.5 lg:py-3 px-3 rounded-full bg-[#ff2a2a] text-white font-bold text-xs lg:text-sm flex items-center justify-center gap-1.5 hover:bg-red-600 transition-colors shadow-md"
+                    className="w-full py-2.5 lg:py-3 px-3 rounded-full bg-[#ff2a2a] text-white font-bold text-xs lg:text-sm flex items-center justify-center gap-2 hover:bg-red-600 transition-colors shadow-md"
                   >
-                    Live Demo ↗
+                    Live Demo
+                    <FaExternalLinkAlt className="text-[0.7em] opacity-80 group-hover:opacity-100" />
                   </a>
                 </div>
               </motion.div>

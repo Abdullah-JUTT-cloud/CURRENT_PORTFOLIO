@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { SiFiverr, SiUpwork, SiFreelancer } from 'react-icons/si';
+import { SiFiverr, SiUpwork, SiFreelancer, SiGmail, SiWhatsapp } from 'react-icons/si';
+import { FaLinkedin, FaInstagram } from 'react-icons/fa6';
 
 /* Contra logo not in simple-icons — inline SVG of the official mark */
 const ContraLogo = ({ size = 28, ...props }) => (
@@ -128,29 +129,21 @@ const Contact = () => {
 
             {/* Quick Badges */}
             <div className="flex flex-wrap gap-2 text-xs font-bold">
-              <a href="mailto:abdullahjuttjutt910@gmail.com" className="px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
-                ✉️ Email: abdullahjuttjutt910@gmail.com
+              <a href="mailto:abdullahjuttjutt910@gmail.com" className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
+                <SiGmail className="text-base shrink-0" />
+                <span>Email: abdullahjuttjutt910@gmail.com</span>
               </a>
-              <a href="https://wa.me/923214194045" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
-                💬 WhatsApp: +92 321 4194045
+              <a href="https://wa.me/923214194045" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
+                <SiWhatsapp className="text-base shrink-0" />
+                <span>WhatsApp: +92 321 4194045</span>
               </a>
-              <a href="https://www.linkedin.com/in/muhammad-abdullah-757aa2287/" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
-                🔗 LinkedIn
+              <a href="https://www.linkedin.com/in/muhammad-abdullah-757aa2287/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
+                <FaLinkedin className="text-base shrink-0" />
+                <span>LinkedIn</span>
               </a>
-              <a href="https://www.instagram.com/abdullah_jutt.44?igsh=dGVwODBvcnN2N3c0" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
-                📸 Instagram
-              </a>
-              <a href="https://www.fiverr.com/s/42ePl8y" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
-                🟢 Fiverr
-              </a>
-              <a href="https://www.upwork.com/freelancers/~01960cac3b684eba9d" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
-                🔵 Upwork
-              </a>
-              <a href="https://contra.com/muhammad_abdullah_m5bn5vlv" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
-                ⚫ Contra
-              </a>
-              <a href="https://www.freelancer.com/u/abdullahjutt44" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
-                🟠 Freelancer
+              <a href="https://www.instagram.com/abdullah_jutt.44?igsh=dGVwODBvcnN2N3c0" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/30 border border-white/20 hover:bg-white hover:text-black transition-colors">
+                <FaInstagram className="text-base shrink-0" />
+                <span>Instagram</span>
               </a>
             </div>
           </div>
