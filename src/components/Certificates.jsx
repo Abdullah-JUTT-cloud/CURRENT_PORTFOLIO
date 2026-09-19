@@ -131,8 +131,11 @@ const Certificates = () => {
                 {[...cat.images, ...cat.images].map((img, idx) => {
                   const certNumber = (idx % cat.images.length) + 1;
                   const altText = `${cat.title} certificate ${certNumber}`;
+                  // Slot widths scaled ~27% from 300/380/440. The 92vw cap on the base size
+                  // keeps the card on screen on narrow phones now that the slot is wider
+                  // than a 360px viewport; it never binds at md and up.
                   return (
-                    <div key={idx} className="w-[300px] md:w-[380px] lg:w-[440px] shrink-0 px-3">
+                    <div key={idx} className="w-[380px] max-w-[92vw] md:w-[480px] lg:w-[560px] shrink-0 px-3">
                       <div
                         onClick={() => setSelected({ image: img, title: altText, category: cat.title })}
                         role="button"

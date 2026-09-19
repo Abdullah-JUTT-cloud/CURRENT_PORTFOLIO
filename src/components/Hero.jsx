@@ -70,7 +70,7 @@ const Hero = () => {
           <h1 
             data-aos="fade-up"
             data-aos-delay="100"
-            className="text-white text-4xl sm:text-5xl md:text-6xl font-black mb-5 tracking-tight leading-[1.05]"
+            className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tight leading-[1.05]"
           >
             Hi, I’m <br /> 
             <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-[#ff2a2a] drop-shadow-[0_2px_10px_rgba(0,0,0,0.15)]">
@@ -82,13 +82,13 @@ const Hero = () => {
           <p 
             data-aos="fade-up"
             data-aos-delay="200"
-            className="text-white/90 text-sm md:text-base lg:text-lg font-medium mb-6 max-w-sm md:max-w-md leading-relaxed drop-shadow-sm"
+            className="text-white/90 text-lg md:text-xl font-medium mb-8 max-w-md lg:max-w-lg leading-relaxed drop-shadow-sm"
           >
             Architecting end-to-end applications with zero tolerance for inefficiency — only clean, scalable, and battle-tested systems. Delivering solutions built to scale and dominate in production.
           </p>
 
           {/* Quick Stats Bar */}
-          <div data-aos="fade-up" data-aos-delay="300" className="flex items-center gap-6 mb-8 py-3 border-y border-white/10 w-full max-w-md">
+          <div data-aos="fade-up" data-aos-delay="300" className="flex items-center gap-6 mb-10 py-3 border-y border-white/10 w-full max-w-md">
             <div>
               <div className="text-2xl font-black text-white">8+</div>
               <div className="text-[10px] uppercase font-bold text-white/60 tracking-wider">Projects</div>
@@ -109,7 +109,7 @@ const Hero = () => {
           <div 
             data-aos="fade-up"
             data-aos-delay="400"
-            className="flex flex-wrap items-start gap-3 w-full"
+            className="flex flex-wrap items-start gap-3 w-full mt-1"
           >
             {/* Download Resume Button */}
             <a 

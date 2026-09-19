@@ -8,6 +8,7 @@ import Experience from './components/Experience'
 import Expertise from './components/Expertise'
 import Skills from './components/Skills'
 import Security from './components/Security'
+import GitHubActivity from './components/GitHubActivity'
 import Education from './components/Education'
 import Certificates from './components/Certificates'
 import Contact from './components/Contact'
@@ -26,6 +27,7 @@ function App() {
       <Expertise />
       <Skills />
       <Security />
+      <GitHubActivity />
       <Education />
       <Certificates />
       <Contact />

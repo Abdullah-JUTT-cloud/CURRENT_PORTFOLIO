@@ -5,6 +5,7 @@ import {
   SiReact, SiNextdotjs, SiTailwindcss, SiFramer,
   SiGreensock, SiSpringboot, SiNodedotjs, SiExpress,
   SiMongodb, SiPostgresql, SiRedis,
+  SiGit, SiGithub, SiLinux,
 } from 'react-icons/si';
 import {
   TbBrain, TbPackage, TbLayoutDashboard, TbDatabase, TbSql,
@@ -45,14 +46,9 @@ const Skills = () => {
     { name: 'PostgreSQL', level: 'Intermediate', icon: SiPostgresql },
     { name: 'Redis', level: 'Intermediate', icon: SiRedis },
     { name: 'SQL', level: 'Advanced', icon: TbSql },
-  ];
-
-  const coreProficiency = [
-    { name: 'Node.js & Express', percent: 88 },
-    { name: 'MongoDB & PostgreSQL', percent: 85 },
-    { name: 'Spring Boot & Java', percent: 80 },
-    { name: 'TypeScript & JavaScript', percent: 90 },
-    { name: 'React & Next.js', percent: 85 },
+    { name: 'Git', level: 'Advanced', icon: SiGit },
+    { name: 'GitHub', level: 'Advanced', icon: SiGithub },
+    { name: 'Linux', level: 'Advanced', icon: SiLinux },
   ];
 
   return (
@@ -75,34 +71,8 @@ const Skills = () => {
           </p>
         </div>
 
-        {/* Progress Bars Row */}
-        <div className="mb-16 bg-gray-50/80 border border-gray-200/80 rounded-3xl p-6 md:p-8 shadow-sm">
-          <h3 className="text-lg font-black text-gray-900 mb-6 flex items-center gap-2">
-            <span>⚡</span> Core Proficiency
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {coreProficiency.map((item, idx) => (
-              <div key={idx} className="flex flex-col gap-2">
-                <div className="flex justify-between items-center text-xs font-bold text-gray-800">
-                  <span>{item.name}</span>
-                  <span className="text-[#ff2a2a]">{item.percent}%</span>
-                </div>
-                <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${item.percent}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="h-full bg-gradient-to-r from-gray-900 to-[#ff2a2a] rounded-full"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 16 Skills Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4">
+        {/* Skills Grid — 25 cards: rows divide evenly into 5 columns on desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {skillsList.map((skill, idx) => (
             <motion.div
               key={idx}

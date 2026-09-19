@@ -7,15 +7,12 @@ const About = () => {
       id="about"
       className="bg-[#ff2a2a] pt-20 pb-40 px-6 md:px-12 w-full relative overflow-x-clip font-sans"
     >
-      {/* Background watermark — fills full section width and height */}
-      <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden">
-        <span className="text-[45vw] font-black leading-none tracking-tight text-[#3F3F3F] opacity-[0.15] select-none whitespace-nowrap">
-          CEH
-        </span>
-      </div>
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 lg:gap-16 items-start relative z-10">
-        {/* Left Side: ID Badge */}
-        <div className="flex flex-col items-center w-full md:w-[350px] shrink-0 mt-12 md:mt-0">
+        {/* Left Side: ID Badge — narrower column pushes the text split toward ~30/70.
+            The card keeps its 330px width on md+ by escaping the column (fixed md:w),
+            overhanging ~20px into the section padding on the left and the flex gap on
+            the right; the centered lanyard stays aligned with the card. */}
+        <div className="flex flex-col items-center w-full md:w-[290px] shrink-0 mt-12 md:mt-0">
           <div
             data-aos="drop-bounce"
             className="relative flex justify-center w-full"
@@ -27,7 +24,9 @@ const About = () => {
             <div className="absolute -top-6 left-1/2 w-6 h-12 bg-gray-300 rounded border border-gray-400 transform -translate-x-1/2 z-10 shadow-[0_2px_10px_rgba(0,0,0,0.3)]"></div>
 
             {/* Badge Card */}
-            <div className="bg-gray-900 w-full max-w-[280px] rounded-2xl p-4 shadow-[0_20px_40px_rgba(0,0,0,0.4)] relative z-20 transform -rotate-2 hover:rotate-0 transition-transform duration-500 text-white">
+            {/* shrink-0 keeps the 330px card intact inside the narrower 290px column,
+                letting it overhang symmetrically into padding/gap instead of flex-shrinking */}
+            <div className="bg-gray-900 shrink-0 w-full max-w-[330px] md:w-[330px] rounded-2xl p-4 shadow-[0_20px_40px_rgba(0,0,0,0.4)] relative z-20 transform -rotate-2 hover:rotate-0 transition-transform duration-500 text-white">
               {/* Cutout Hole */}
               <div className="absolute -top-3 left-1/2 w-16 h-6 bg-gray-900 rounded-t-xl transform -translate-x-1/2 flex justify-center items-center">
                 <div className="w-8 h-2 bg-black/30 rounded-full shadow-inner"></div>
@@ -69,32 +68,32 @@ const About = () => {
             About Me
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-black text-black mb-4">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-black mb-4">
             Hi, I'm Muhammad Abdullah
           </h2>
 
-          <p className="text-[#000] font-black text-xl mb-3 uppercase tracking-wide">
+          <p className="text-[#000] font-black text-xl md:text-2xl mb-3 uppercase tracking-wide">
             Software Engineer / Full Stack Developer | Building Scalable
             Solutions
           </p>
 
-          <p className="text-s  md:text-base font-medium mb-4 leading-relaxed text-red-100 max-w-4xl">
+          <p className="text-base md:text-lg font-medium mb-4 leading-relaxed text-red-100 max-w-4xl">
             Software Engineer / Full Stack Developer based in Lahore, Pakistan,
             with hands-on experience shipping production-ready full-stack
             applications across the MERN stack and beyond.
           </p>
 
-          <p className="text-sm md:text-base font-medium mb-4 leading-relaxed text-red-100 max-w-3xl">
+          <p className="text-base md:text-lg font-medium mb-4 leading-relaxed text-red-100 max-w-3xl">
             I specialize in{" "}
             <strong className="text-black font-black">
-              React, Next.js, TypeScript, Node.js, MongoDB, and PostgreSQL
+              JavaScript, JAVA, Spring Boot, React, Next.js, TypeScript, Node.js, MongoDB, and PostgreSQL, AI/ML
             </strong>{" "}
             — architecting clean, scalable, and battle-tested systems with zero
             tolerance for inefficiency. From healthcare SaaS platforms to
             real-time messaging apps, I love creating impactful software.
           </p>
 
-          <p className="text-sm md:text-base font-medium mb-8 leading-relaxed text-red-100 max-w-3xl">
+          <p className="text-base md:text-lg font-medium mb-8 leading-relaxed text-red-100 max-w-3xl">
             Passionate about continuous learning, clean code, and open-source
             collaboration. Currently pursuing a BSSE at the University of
             Central Punjab while working as a MERN stack developer and freelance

@@ -45,6 +45,34 @@ const platforms = [
   }
 ];
 
+/* Formspree endpoint — submissions are sent as JSON via fetch, not a native POST */
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjykkblw';
+
+const CONTACT_EMAIL = 'abdullahjuttjutt910@gmail.com';
+
+const SUBMIT_ERROR_MESSAGE = `Something went wrong — please try again or email me directly at ${CONTACT_EMAIL}`;
+
+/* Order here also drives which field gets focused on a failed submit */
+const FIELD_ORDER = ['firstName', 'lastName', 'email', 'subject', 'message', 'permission'];
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validateForm = (data) => {
+  const next = {};
+
+  if (!data.firstName.trim()) next.firstName = 'First name is required.';
+  if (!data.lastName.trim()) next.lastName = 'Last name is required.';
+
+  if (!data.email.trim()) next.email = 'Email is required.';
+  else if (!EMAIL_PATTERN.test(data.email.trim())) next.email = 'Enter a valid email address.';
+
+  if (!data.subject.trim()) next.subject = 'Subject is required.';
+  if (!data.message.trim()) next.message = 'Please add a message.';
+  if (!data.permission) next.permission = 'Please tick the permission checkbox.';
+
+  return next;
+};
+
 const Contact = () => {
   const ref = useRef(null);
   
@@ -59,6 +87,8 @@ const Contact = () => {
   });
 
   const [formStatus, setFormStatus] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -75,22 +105,68 @@ const Contact = () => {
       ...prev,
       [id]: type === 'checkbox' ? checked : value
     }));
+
+    // Clear the field's inline error as soon as the visitor edits it
+    setErrors((prev) => (prev[id] ? { ...prev, [id]: '' } : prev));
   };
 
   // Handle form submission logic
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.permission) {
-      setFormStatus({ type: 'error', message: 'Please check the permission checkbox before sending.' });
+    const validationErrors = validateForm(formData);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).some((key) => validationErrors[key])) {
+      // Validation failed — clear any stale banner and focus the first bad field
+      setFormStatus(null);
+      const firstInvalid = FIELD_ORDER.find((key) => validationErrors[key]);
+      if (firstInvalid) document.getElementById(firstInvalid)?.focus();
       return;
     }
 
-    console.log("Form Data Submitted:", formData);
-    setFormStatus({ type: 'success', message: `Thank you ${formData.firstName}! Your message has been sent successfully.` });
-    
-    // Reset Form
-    setFormData({ firstName: '', lastName: '', email: '', subject: '', message: '', permission: false });
+    setIsSubmitting(true);
+    setFormStatus(null);
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          'First Name': formData.firstName.trim(),
+          'Last Name': formData.lastName.trim(),
+          Email: formData.email.trim(),
+          Subject: formData.subject.trim(),
+          Message: formData.message.trim()
+        })
+      });
+
+      if (!response.ok) {
+        // Keep the field values so the visitor doesn't lose their message
+        const detail = await response.text().catch(() => '');
+        console.error('Formspree submission failed:', response.status, detail);
+        setFormStatus({ type: 'error', message: SUBMIT_ERROR_MESSAGE });
+        return;
+      }
+
+      setFormStatus({
+        type: 'success',
+        message: `Thank you ${formData.firstName.trim()}! Your message has been sent successfully.`
+      });
+
+      // Reset Form
+      setFormData({ firstName: '', lastName: '', email: '', subject: '', message: '', permission: false });
+      setErrors({});
+    } catch (error) {
+      // Network failure — again, leave the typed values in place
+      console.error('Formspree submission error:', error);
+      setFormStatus({ type: 'error', message: SUBMIT_ERROR_MESSAGE });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -179,7 +255,10 @@ const Contact = () => {
 
           {/* Toast / Alert Status Message */}
           {formStatus && (
-            <div className={`mb-8 p-4 rounded-xl text-sm font-bold flex items-center justify-between ${
+            <div
+              role={formStatus.type === 'error' ? 'alert' : 'status'}
+              aria-live="polite"
+              className={`mb-8 p-4 rounded-xl text-sm font-bold flex items-center justify-between ${
               formStatus.type === 'success' ? 'bg-black text-emerald-400 border border-emerald-500/50' : 'bg-black text-amber-300 border border-amber-500/50'
             }`}>
               <span>{formStatus.message}</span>
@@ -187,7 +266,7 @@ const Contact = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-10 w-full">
+          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-10 w-full">
             <div className="flex flex-col md:flex-row gap-10 md:gap-16 w-full">
               
               {/* Left Column */}
@@ -200,8 +279,15 @@ const Contact = () => {
                     onChange={handleChange}
                     placeholder="First Name *" 
                     required
-                    className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white/80 font-medium rounded-none"
+                    aria-invalid={!!errors.firstName}
+                    aria-describedby={errors.firstName ? 'firstName-error' : undefined}
+                    className={`w-full bg-transparent border-b pb-3 text-lg focus:outline-none transition-colors placeholder-white/80 font-medium rounded-none ${errors.firstName ? 'border-black' : 'border-white/40 focus:border-white'}`}
                   />
+                  {errors.firstName && (
+                    <p id="firstName-error" className="mt-2 inline-block px-2.5 py-1 rounded-full bg-black text-white text-[11px] font-bold">
+                      {errors.firstName}
+                    </p>
+                  )}
                 </div>
                 <div className="relative">
                   <input 
@@ -211,8 +297,15 @@ const Contact = () => {
                     onChange={handleChange}
                     placeholder="Last Name *" 
                     required
-                    className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white/80 font-medium rounded-none"
+                    aria-invalid={!!errors.lastName}
+                    aria-describedby={errors.lastName ? 'lastName-error' : undefined}
+                    className={`w-full bg-transparent border-b pb-3 text-lg focus:outline-none transition-colors placeholder-white/80 font-medium rounded-none ${errors.lastName ? 'border-black' : 'border-white/40 focus:border-white'}`}
                   />
+                  {errors.lastName && (
+                    <p id="lastName-error" className="mt-2 inline-block px-2.5 py-1 rounded-full bg-black text-white text-[11px] font-bold">
+                      {errors.lastName}
+                    </p>
+                  )}
                 </div>
                 <div className="relative">
                   <input 
@@ -222,8 +315,15 @@ const Contact = () => {
                     onChange={handleChange}
                     placeholder="Your Email *" 
                     required
-                    className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white/80 font-medium rounded-none"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
+                    className={`w-full bg-transparent border-b pb-3 text-lg focus:outline-none transition-colors placeholder-white/80 font-medium rounded-none ${errors.email ? 'border-black' : 'border-white/40 focus:border-white'}`}
                   />
+                  {errors.email && (
+                    <p id="email-error" className="mt-2 inline-block px-2.5 py-1 rounded-full bg-black text-white text-[11px] font-bold">
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -237,8 +337,15 @@ const Contact = () => {
                     onChange={handleChange}
                     placeholder="Subject *" 
                     required
-                    className="w-full bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white/80 font-medium rounded-none"
+                    aria-invalid={!!errors.subject}
+                    aria-describedby={errors.subject ? 'subject-error' : undefined}
+                    className={`w-full bg-transparent border-b pb-3 text-lg focus:outline-none transition-colors placeholder-white/80 font-medium rounded-none ${errors.subject ? 'border-black' : 'border-white/40 focus:border-white'}`}
                   />
+                  {errors.subject && (
+                    <p id="subject-error" className="mt-2 inline-block px-2.5 py-1 rounded-full bg-black text-white text-[11px] font-bold">
+                      {errors.subject}
+                    </p>
+                  )}
                 </div>
                 <div className="relative h-full flex flex-col">
                   <textarea 
@@ -247,8 +354,15 @@ const Contact = () => {
                     onChange={handleChange}
                     placeholder="Your message / project details *" 
                     required
-                    className="w-full h-full min-h-[120px] bg-transparent border-b border-white/40 pb-3 text-lg focus:outline-none focus:border-white transition-colors placeholder-white/80 font-medium resize-none rounded-none"
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? 'message-error' : undefined}
+                    className={`w-full h-full min-h-[120px] bg-transparent border-b pb-3 text-lg focus:outline-none transition-colors placeholder-white/80 font-medium resize-none rounded-none ${errors.message ? 'border-black' : 'border-white/40 focus:border-white'}`}
                   ></textarea>
+                  {errors.message && (
+                    <p id="message-error" className="mt-2 inline-block px-2.5 py-1 rounded-full bg-black text-white text-[11px] font-bold self-start">
+                      {errors.message}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -262,23 +376,41 @@ const Contact = () => {
                   id="permission" 
                   checked={formData.permission}
                   onChange={handleChange}
+                  aria-invalid={!!errors.permission}
+                  aria-describedby={errors.permission ? 'permission-error' : undefined}
                   className="mt-1 w-4 h-4 rounded border-white/40 bg-transparent text-black focus:ring-white cursor-pointer" 
                   style={{ accentColor: "white" }}
                 />
-                <label htmlFor="permission" className="cursor-pointer max-w-sm leading-snug">
-                  I give permission to Muhammad Abdullah to contact me regarding this inquiry.
-                </label>
+                <div className="flex flex-col items-start">
+                  <label htmlFor="permission" className="cursor-pointer max-w-sm leading-snug">
+                    I give permission to Muhammad Abdullah to contact me regarding this inquiry.
+                  </label>
+                  {errors.permission && (
+                    <p id="permission-error" className="mt-2 inline-block px-2.5 py-1 rounded-full bg-black text-white text-[11px] font-bold">
+                      {errors.permission}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Submit Button */}
               <button 
                 type="submit" 
-                className="px-10 py-3.5 rounded-full bg-white text-black font-black flex items-center justify-center gap-3 hover:bg-gray-950 hover:text-white transition-all duration-300 group shadow-2xl self-start md:self-auto"
+                disabled={isSubmitting}
+                aria-busy={isSubmitting}
+                className="px-10 py-3.5 rounded-full bg-white text-black font-black flex items-center justify-center gap-3 hover:bg-gray-950 hover:text-white transition-all duration-300 group shadow-2xl self-start md:self-auto disabled:pointer-events-none disabled:opacity-60"
               >
-                Send Message
-                <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
+                {isSubmitting ? 'Sending…' : 'Send Message'}
+                {isSubmitting ? (
+                  <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+                    <path className="opacity-90" d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                )}
               </button>
             </div>
           </form>
