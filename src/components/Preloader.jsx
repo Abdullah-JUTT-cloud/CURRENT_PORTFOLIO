@@ -1,55 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
-const Preloader = () => {
-  const [isLoading, setIsLoading] = useState(true);
+export default function Preloader() {
+  const [count, setCount] = useState(0);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
-    // Wait for the water fill animation (1.5s) + a small pause (0.5s)
-    // before the shutter goes up smoothly.
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2200);
-    
-    return () => clearTimeout(timer);
+    const start = performance.now();
+    const frame = (now) => {
+      const progress = Math.min(1, (now - start) / 900);
+      setCount(Math.round(progress * 100));
+      if (progress < 1) requestAnimationFrame(frame);
+      else setDone(true);
+    };
+    requestAnimationFrame(frame);
   }, []);
 
   return (
-    <AnimatePresence>
-      {isLoading && (
-        <motion.div
-          key="preloader"
-          initial={{ y: 0 }}
-          exit={{ y: "-100%" }}
-          transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 w-full h-screen bg-[#ff2a2a] z-[100000] flex items-center justify-center"
-        >
-          {/* Logo Container */}
-          <motion.div 
-            exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="relative text-5xl md:text-7xl font-black tracking-tighter"
-          >
-            {/* Background text (empty state) */}
-            <div className="text-red-900/30">
-              AbdullahJutt<span className="text-red-900/30">.</span>
-            </div>
-
-            {/* Foreground text (water fill state) */}
-            <motion.div 
-              className="absolute top-0 left-0 text-white overflow-hidden whitespace-nowrap"
-              initial={{ clipPath: 'inset(100% 0 0 0)' }}
-              animate={{ clipPath: 'inset(0% 0 0 0)' }}
-              transition={{ duration: 1.6, ease: "easeInOut", delay: 0.2 }}
-            >
-              AbdullahJutt<span className="text-black">.</span>
-            </motion.div>
-          </motion.div>
-
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className={`preloader ${done ? 'is-done' : ''}`} aria-hidden="true">
+      <div className="preloader-grid" />
+      <div className="preloader-top"><span>Portfolio / 2026</span><span>Lahore, PK</span></div>
+      <div className="preloader-center">
+        <svg viewBox="0 0 600 90" aria-hidden="true"><path d="M20 45H540" /><path className="arrow-head" d="M540 45l-30-17m30 17-30 17" /><circle cx="300" cy="45" r="38" /></svg>
+        <strong>{String(count).padStart(3, '0')}</strong>
+      </div>
+      <div className="preloader-bottom"><span>Calibrating trajectory</span><span>{count}%</span></div>
+    </div>
   );
-};
-
-export default Preloader;
+}

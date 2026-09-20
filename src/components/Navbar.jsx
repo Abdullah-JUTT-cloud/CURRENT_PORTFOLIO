@@ -1,129 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ArrowUpRight, Menu, X } from 'lucide-react';
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+const links = [['about', 'About'], ['projects', 'Work'], ['experience', 'Journey'], ['expertise', 'Expertise'], ['security', 'Security']];
 
-  // Handle scroll to track positioning parameters safely
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navLinks = ['Home', 'About', 'Skills', 'Security', 'Education', 'Projects', 'Contact'];
+  useEffect(() => {
+    document.body.classList.toggle('menu-locked', open);
+    return () => document.body.classList.remove('menu-locked');
+  }, [open]);
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        isOpen 
-          ? 'bg-[#ff2a2a] py-4'
-          : isScrolled 
-            ? 'bg-white/70 backdrop-blur-xl py-3 border-b border-gray-200/50 shadow-[0_4px_30px_rgba(0,0,0,0.03)]' 
-            : 'bg-transparent py-5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        
-        {/* Left Side: Dynamic Logo font node configurations */}
-        <div className="flex items-center">
-          <a 
-            href="#" 
-            className={`text-2xl font-black tracking-tight transition-colors duration-500 ${
-              isOpen || !isScrolled ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            AbdullahJutt <span className="text-[#ff2a2a]">.</span>
-          </a>
+    <header className={`navbar ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-menu-open' : ''}`}>
+      <nav className="shell nav-inner" aria-label="Primary navigation">
+        <a className="brand magnetic" href="#home" onClick={() => setOpen(false)}>
+          <span className="brand-orbit"><svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M20 12.7c-.9-2.1-2-4.3-3-6.6 1.4 1 2.7 2.3 3.8 3.9 1.1-1.6 2.4-3.1 3.8-3.9-1 2.3-2.1 4.5-3 6.6Z"/></svg></span>
+          <span>M. Abdullah</span>
+        </a>
+        <div className={`nav-links ${open ? 'is-open' : ''}`}>
+          <span className="nav-menu-label">Index / 2026</span>
+          {links.map(([id, label], index) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)}><sup>0{index + 1}</sup>{label}</a>)}
+          <a className="nav-contact" href="#contact" onClick={() => setOpen(false)}>Take aim <ArrowUpRight size={16} /></a>
         </div>
-
-        {/* Center: Desktop Links with dynamic contrasting rules */}
-        <div className="hidden md:flex space-x-7 lg:space-x-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link} 
-              href={`#${link.toLowerCase()}`}
-              className={`font-semibold text-sm tracking-wide relative group transition-colors duration-500 ${
-                isScrolled ? 'text-gray-600 hover:text-gray-950' : 'text-white/80 hover:text-white'
-              }`}
-            >
-              {link}
-              {/* Active animated custom alignment tracking baseline highlight */}
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#ff2a2a] transition-all duration-300 group-hover:w-full"></span>
-            </a>
-          ))}
-        </div>
-
-        {/* Right Side: Responsive CTA Frame Button */}
-        <div className="hidden md:block">
-          <a 
-            href="#contact" 
-            className={`px-6 py-2.5 rounded-full text-sm font-black transition-all duration-500 ${
-              isScrolled
-                ? 'bg-gray-900 text-white hover:bg-[#ff2a2a] hover:shadow-[0_10px_25px_rgba(255,42,42,0.25)]'
-                : 'bg-white/10 border border-white/20 text-white hover:bg-white hover:text-black backdrop-blur-md'
-            }`}
-          >
-            Hire Me
-          </a>
-        </div>
-
-        {/* Mobile Hamburger Trigger Controllers */}
-        <div className="md:hidden flex items-center">
-          <button 
-            onClick={() => setIsOpen(!isOpen)}
-            className={`focus:outline-none p-2 transition-colors duration-500 ${
-              isOpen || !isScrolled ? 'text-white' : 'text-gray-900'
-            }`}
-            aria-label="Toggle navigation drawer menu"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu Panel Expansion Drawer Overlay */}
-      <div 
-        className={`md:hidden absolute top-full left-0 w-full transition-all duration-500 ease-in-out ${
-          isOpen ? 'max-h-[460px] py-6 opacity-100 bg-[#ff2a2a] shadow-2xl' : 'max-h-0 opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className="flex flex-col px-6 space-y-4">
-          {navLinks.map((link) => (
-            <a 
-              key={link} 
-              href={`#${link.toLowerCase()}`}
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:text-black font-extrabold text-base border-b border-white/10 pb-2.5 transition-colors"
-            >
-              {link}
-            </a>
-          ))}
-          <div className="pt-2">
-             <a 
-               href="#contact" 
-               onClick={() => setIsOpen(false)} 
-               className="inline-block px-6 py-3 rounded-full bg-white text-[#ff2a2a] font-black hover:bg-gray-950 hover:text-white transition-all duration-300 w-full text-center shadow-xl"
-             >
-               Hire Me
-             </a>
-          </div>
-        </div>
-      </div>
-    </nav>
+        <button className="menu-toggle" onClick={() => setOpen(!open)} aria-label="Toggle menu" aria-expanded={open}>{open ? <X /> : <Menu />}</button>
+      </nav>
+    </header>
   );
-};
-
-export default Navbar;
+}
