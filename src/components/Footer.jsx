@@ -2,10 +2,13 @@ import { ArrowUp } from 'lucide-react';
 
 // Brand icons: GitHub, Instagram and WhatsApp from Simple Icons (CC0); LinkedIn from
 // Font Awesome Free (CC BY 4.0) — its mark is unavailable in Simple Icons.
+// X and Reddit from official brand assets.
 const brandLinks = [
   ['github', 'GitHub', 'https://github.com/Abdullah-JUTT-cloud'],
   ['linkedin', 'LinkedIn', 'https://www.linkedin.com/in/muhammad-abdullah-757aa2287/'],
+  ['x', 'X', 'https://x.com/Abdullah_jutt44'],
   ['instagram', 'Instagram', 'https://www.instagram.com/abdullah_jutt.44?igsh=dGVwODBvcnN2N3c0'],
+  ['reddit', 'Reddit', 'https://www.reddit.com/user/0x__ABDULLAH/'],
   ['whatsapp', 'WhatsApp', 'https://wa.me/923214194045'],
 ];
 
