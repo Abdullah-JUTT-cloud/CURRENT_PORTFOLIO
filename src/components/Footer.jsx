@@ -1,4 +1,4 @@
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, ArrowUpRight } from 'lucide-react';
 
 // Brand icons: GitHub, Instagram and WhatsApp from Simple Icons (CC0); LinkedIn from
 // Font Awesome Free (CC BY 4.0) — its mark is unavailable in Simple Icons.
@@ -13,5 +13,5 @@ const brandLinks = [
 ];
 
 export default function Footer() {
-  return <footer className="footer"><div className="shell"><div className="footer-top"><div><span>Software Engineer / Full Stack Developer</span><p>Building scalable solutions with clean code, thoughtful product decisions, and zero tolerance for fragile engineering.</p></div><div className="footer-status"><i /> AVAILABLE FOR FREELANCE & ROLES<br /><span>LAHORE, PAKISTAN</span></div></div><a className="footer-word" href="#home">Muhammad<span>Abdullah</span><ArrowUp /></a><div className="footer-links"><div>{brandLinks.map(([icon, label, url]) => <a href={url} target="_blank" rel="noreferrer" key={icon}><span className={`brand-logo brand-logo--${icon}`} aria-hidden="true" />{label}</a>)}</div><div><span>© {new Date().getFullYear()} Muhammad Abdullah</span><span>No fragile code. No excuses.</span></div></div></div></footer>;
+  return <footer className="footer"><div className="shell"><div className="footer-top"><div><span>Software Engineer / Full Stack Developer</span><p>Building scalable solutions with clean code, thoughtful product decisions, and zero tolerance for fragile engineering.</p></div><div className="footer-side"><div className="footer-status"><i /> AVAILABLE FOR FREELANCE & ROLES<br /><span>LAHORE, PAKISTAN</span></div><a className="footer-company" href="https://runtimesystems.tech/" target="_blank" rel="noreferrer">Visit company website <ArrowUpRight size={16} /></a></div></div><a className="footer-word" href="#home">Muhammad<span>Abdullah</span><ArrowUp /></a><div className="footer-links"><div>{brandLinks.map(([icon, label, url]) => <a href={url} target="_blank" rel="noreferrer" key={icon}><span className={`brand-logo brand-logo--${icon}`} aria-hidden="true" />{label}</a>)}</div><div><span>© {new Date().getFullYear()} Muhammad Abdullah</span><span>No fragile code. No excuses.</span></div></div></div></footer>;
 }

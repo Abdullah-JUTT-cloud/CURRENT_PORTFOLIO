@@ -29,6 +29,7 @@ export default function Navbar() {
         <div className={`nav-links ${open ? 'is-open' : ''}`}>
           <span className="nav-menu-label">Index / 2026</span>
           {links.map(([id, label], index) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)}><sup>0{index + 1}</sup>{label}</a>)}
+          <a className="nav-company" href="https://runtimesystems.tech/" target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>Company <ArrowUpRight size={14} /></a>
           <a className="nav-contact" href="#contact" onClick={() => setOpen(false)}>Take aim <ArrowUpRight size={16} /></a>
         </div>
         <button className="menu-toggle" onClick={() => setOpen(!open)} aria-label="Toggle menu" aria-expanded={open}>{open ? <X /> : <Menu />}</button>
